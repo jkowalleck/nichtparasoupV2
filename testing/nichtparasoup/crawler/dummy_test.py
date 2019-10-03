@@ -12,7 +12,7 @@ class CrawlerDummyTest(unittest.TestCase):
 
     def test_crawl(self) -> None:
         # arrange
-        images_crawled: typing.List[Image] = list()
+        images_crawled = list()  # type: typing.List[Image]
         image_found = images_crawled.append
         crawler = CrawlerDummy('test', image_found)
 

@@ -4,7 +4,7 @@
 
 ```shell script
 # run from project root:
-python3 -m pip install --user -e .
+python3 -m pip install --user -e .[testing]
 python3 -m pytest
 ```
 

@@ -1,12 +1,15 @@
 __all__ = ['NichtParasoup']
 
+
 import typing
 
 from .crawler import Image, Crawler, CrawlerError
 
 from .crawler.dummy import Dummy as DummyCrawler
 
-Factor = typing.TypeVar('Factor', int, float)
+
+class Factor(float):
+    pass
 
 
 class ImageList(typing.Set[Image]):
@@ -34,18 +37,19 @@ class NichtParasoup(object):
             return self._add_crawler_site(crawler, site, factor)
 
     def _add_crawler_object(self, crawler: Crawler, factor: Factor = None) -> None:
+        factor = Factor(factor if factor is not None and 0 < factor <= 10 else 1)
         images = ImageList()
         crawler.image_found = lambda image: images.add(image) if image not in self.blacklist else None
 
         self.crawlers.append((
             crawler,
-            factor if factor is not None and 0 < factor <= 10 else 1,
+            factor,
             images,
         ))
 
     def _add_crawler_site(self, crawler_name: str, site: str, factor: Factor = None) -> None:
-        crawler_name = crawler_name.lower()
-        for crawler_subclass in Crawler.__subclasses__():
+        crawler_name = str(crawler_name).lower()
+        for crawler_subclass in Crawler.__subclasses__():  # type: typing.Type[Crawler]
             if crawler_name == crawler_subclass.__name__.lower():
                 return self._add_crawler_object(crawler_subclass(site), factor)
         raise Exception('unknown crawler: %s' % crawler_name)
