@@ -2,22 +2,32 @@
 
 ## run 
 
+tests are run via tox.
+
 ### general 
 
 ```shell script
 # run from project root:
-python3 -m pip install --user -e .[testing] --no-cache-dir
-python3 -m pytest
+pip install tox
+python -m tox
 ```
 
 ### via docker 
 ```shell script
 # run from project root:
-docker run -it --rm --name nichtparasoup -v \
-  "$PWD":/usr/src/nichtparasoup -w /usr/src/nichtparasoup \
+docker run \
+  --name nichtparasoup-testing \
+  -v "$PWD":/usr/src/nichtparasoup \
+  -w /usr/src/nichtparasoup \
+  -it --rm \
   python:3.4 bash -c \
-  'python --version; pip install -e .[testing] --no-cache-dir && python -m pytest'
+  'pip install tox; python -m tox'
 ```
+
+## reports 
+
+* after running, a report will be shown
+* for coverage report see `python -m coverage`
 
 ## contribution 
 

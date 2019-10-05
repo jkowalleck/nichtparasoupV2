@@ -1,0 +1,14 @@
+# .coveragerc to control coverage.py
+[run]
+data_file = .coverage
+source = nichtparasoup
+branch = True
+
+[report]
+fail_under = 80
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml
