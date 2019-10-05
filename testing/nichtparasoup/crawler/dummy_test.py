@@ -2,9 +2,6 @@ __all__ = ['CrawlerDummyTest']
 
 import unittest
 
-import typing
-
-from nichtparasoup.crawler import Image
 from nichtparasoup.crawler.dummy import Dummy as CrawlerDummy
 
 
@@ -12,13 +9,14 @@ class CrawlerDummyTest(unittest.TestCase):
 
     def test_crawl(self) -> None:
         # arrange
-        images_crawled = list()  # type: typing.List[Image]
-        image_found = images_crawled.append
-        crawler = CrawlerDummy('test', image_found)
+        crawler = CrawlerDummy('test')
 
         # act
-        crawler.crawl()
+        images_crawled = crawler.crawl()
+        images_crawled_len = len(images_crawled)
+        image_crawled = images_crawled.pop() if images_crawled_len else None
 
         # assert
-        self.assertGreater(len(images_crawled), 0, 'no images crawled')
-        self.assertTrue(images_crawled[0].more.get('this_is_a_dummy'), 'this is not a dummy')
+        self.assertEqual(images_crawled_len, 1, 'no images crawled')
+        if image_crawled:
+            self.assertTrue(image_crawled.more.get('this_is_a_dummy'), 'this is not a dummy')

@@ -1,38 +1,49 @@
-__all__ = ['NichtParasoupTest']
-
 import unittest
-import ddt
 
-from nichtparasoup.nichtparasoup import NichtParasoup
-
-from nichtparasoup.crawler import Crawler
+from nichtparasoup.nichtparasoup import *
+from nichtparasoup.crawler import ImageCrawler, Images, Image
 
 
-@ddt.ddt
 class NichtParasoupTest(unittest.TestCase):
+    class ImageCrawlerForTesting(ImageCrawler):
+        """ implementation for testing & mocking """
 
-    @ddt.data('dummy')
-    def test_add_crawler_site(self, crawler: str):
+        def crawl(self) -> Images: pass
+
+    def test__is_image_not_in_blacklist(self):
         # arrange
+        image1 = Image('test1')
+        image2 = Image('test2')
         nichtparasoup = NichtParasoup()
-        crawlers = nichtparasoup.crawlers
 
         # act
-        nichtparasoup._add_crawler_site(crawler, 'test')
+        nichtparasoup.blacklist.add(image1.uri)
 
         # assert
-        self.assertEqual(len(crawlers), 1, 'unexpected crawler count')
-        self.assertEqual(crawlers[0][0].__class__.__name__.lower(), crawler.lower(), 'unexpected crawler class')
+        self.assertTrue(nichtparasoup._is_image_not_in_blacklist(image2))
+        self.assertFalse(nichtparasoup._is_image_not_in_blacklist(image1))
 
-    def test_add_crawler_object(self):
+    def test__add_image_to_blacklist(self):
         # arrange
-        crawler = Crawler('test')
+        image1 = Image('test1')
+        image2 = Image('test2')
         nichtparasoup = NichtParasoup()
-        crawlers = nichtparasoup.crawlers
 
         # act
-        nichtparasoup._add_crawler_object(crawler)
+        nichtparasoup._add_image_to_blacklist(image1)
 
         # assert
-        self.assertEqual(len(crawlers), 1, 'unexpected crawler count')
-        self.assertEqual(crawlers[0][0], crawler, 'unexpected crawler object')
+        self.assertIn(image1.uri, nichtparasoup.blacklist)
+        self.assertNotIn(image2.uri, nichtparasoup.blacklist)
+
+    def test_add_imagerawler(self):
+        # arrange
+
+        nichtparasoup = NichtParasoup()
+        imagecrawler = self.ImageCrawlerForTesting('test')
+
+        # act
+        nichtparasoup.add_imagerawler(imagecrawler, 1)
+
+        # assert
+        self.assertIn(imagecrawler, [crawler.imagecrawler for crawler in nichtparasoup.crawlers])

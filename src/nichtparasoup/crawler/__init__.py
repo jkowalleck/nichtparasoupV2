@@ -1,39 +1,33 @@
-__all__ = ["Crawler", "CrawlerCallback", "CrawlerError", "Image", ]
+__all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource"]
 
 import abc
 import typing
 
+ImageUri = str
+
+ImageSource = str
+
 
 class Image(object):
 
-    def __init__(self, uri: str, source: typing.Optional[str] = None, **kwargs) -> None:
-        self.uri = str(uri)
-        self.source = None if source is None else str(source)
-        self.more = dict(**kwargs)
+    def __init__(self, uri: ImageUri, source: typing.Optional[ImageSource] = None, **more) -> None:
+        self.uri = uri
+        self.source = source
+        self.more = more
+
+    def __hash__(self) -> int:
+        """ the uri is the identifier of Image """
+        return hash(self.uri)
 
 
-CrawlerCallback = typing.Callable[[Image], None]
-
-
-def _image_found_noop(_: Image) -> None:
-    # must be compatible to: CrawlerCallback
+class Images(typing.Set[Image]):
     pass
 
 
-class Crawler(object):
+class ImageCrawler(abc.ABC):
 
-    def __init__(self, site: str, on_image_found: CrawlerCallback = _image_found_noop) -> None:
-        self.site = str(site)
-        self.image_found = on_image_found  # type: CrawlerCallback
+    def __init__(self, site: str) -> None:
+        self.site = site
 
     @abc.abstractmethod
-    def crawl(self) -> None:
-        """
-        do the crawling
-        for each image found: call self.image_found()
-        """
-        raise CrawlerError('implementation of abstract missing')
-
-
-class CrawlerError(Exception):
-    pass
+    def crawl(self) -> Images: pass

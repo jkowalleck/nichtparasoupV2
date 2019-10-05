@@ -1,55 +1,65 @@
-__all__ = ['NichtParasoup']
-
+__all__ = ['NichtParasoup', 'CrawlerWeight', 'Crawler', 'Crawlers', 'BlackList']
 
 import typing
 
-from .crawler import Image, Crawler, CrawlerError
+from .crawler import Images, Image, ImageUri, ImageCrawler
 
-from .crawler.dummy import Dummy as DummyCrawler
+CrawlerWeight = typing.Union[int, float]
 
 
-class Factor(float):
+class BlackList(typing.Set[ImageUri]):
     pass
 
 
-class ImageList(typing.Set[Image]):
-    pass
+_IsImageAddable = typing.Callable[[Image], bool]
+
+_OnImageAdded = typing.Callable[[Image], typing.Any]
 
 
-class BlackList(typing.Set[str]):
-    pass
+class Crawler(object):
+
+    def __init__(self,
+                 imagecrawler: ImageCrawler, weight: CrawlerWeight,
+                 is_image_addable: typing.Optional[_IsImageAddable] = None,
+                 on_image_added: typing.Optional[_OnImageAdded] = None
+                 ):
+        self.imagecrawler = imagecrawler
+        self.weight = weight if weight > 0 else 1
+        self.images = Images()
+        self._is_image_addable = is_image_addable
+        self._image_added = on_image_added
+
+    def crawl(self):
+        images_crawled = self.imagecrawler.crawl()
+        for image_crawled in images_crawled:
+            image_is_addable = self._is_image_addable(image_crawled) if self._is_image_addable else True
+            if not image_is_addable:
+                continue  # for
+            self.images.add(image_crawled)
+            if self._image_added:
+                self._image_added(image_crawled)
 
 
-class CrawlerList(typing.List[typing.Tuple[Crawler, Factor, ImageList]]):
+class Crawlers(typing.Set[Crawler]):
     pass
 
 
 class NichtParasoup(object):
 
     def __init__(self) -> None:
-        self.crawlers = CrawlerList()
+        self.crawlers = Crawlers()
         self.blacklist = BlackList()
 
-    def add_crawler(self, crawler: typing.Union[Crawler, str], site: str = None, factor: Factor = None) -> None:
-        if isinstance(crawler, Crawler):
-            return self._add_crawler_object(crawler, factor)
-        else:
-            return self._add_crawler_site(crawler, site, factor)
+    def _is_image_not_in_blacklist(self, image: Image) -> bool:
+        # must be compatible to: _IsImageAddable
+        return image.uri not in self.blacklist
 
-    def _add_crawler_object(self, crawler: Crawler, factor: Factor = None) -> None:
-        factor = Factor(factor if factor is not None and 0 < factor <= 10 else 1)
-        images = ImageList()
-        crawler.image_found = lambda image: images.add(image) if image not in self.blacklist else None
+    def _add_image_to_blacklist(self, image: Image) -> None:
+        # must be compatible to: _OnImageAdded
+        self.blacklist.add(image.uri)
 
-        self.crawlers.append((
-            crawler,
-            factor,
-            images,
+    def add_imagerawler(self, imagecrawler: ImageCrawler, weight: CrawlerWeight):
+        self.crawlers.add(Crawler(
+            imagecrawler, weight,
+            self._is_image_not_in_blacklist, self._add_image_to_blacklist
         ))
-
-    def _add_crawler_site(self, crawler_name: str, site: str, factor: Factor = None) -> None:
-        crawler_name = str(crawler_name).lower()
-        for crawler_subclass in Crawler.__subclasses__():  # type: typing.Type[Crawler]
-            if crawler_name == crawler_subclass.__name__.lower():
-                return self._add_crawler_object(crawler_subclass(site), factor)
-        raise Exception('unknown crawler: %s' % crawler_name)

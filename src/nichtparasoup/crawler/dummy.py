@@ -1,12 +1,16 @@
-from . import Crawler, Image
+__all__ = ["Dummy"]
+
+from . import ImageCrawler, Images, Image
 
 import uuid
 
 
-class Dummy(Crawler):
+class Dummy(ImageCrawler):
 
-    def crawl(self):
-        """ find the same image ... every time """
-        uri = './images/logo.png#%s' % uuid.uuid4()
-        image = Image(uri=uri, this_is_a_dummy=True)
-        self.image_found(image)
+    def crawl(self) -> Images:
+        images = Images()
+        images.add(Image(
+            '#%s' % uuid.uuid4(),  # @TODO add data url to the logo or something
+            this_is_a_dummy=True
+        ))
+        return images
