@@ -7,15 +7,8 @@ setuptools.setup(
     package_dir={'': 'src'},
     python_requires='>=3.4',
     install_requires=[
-        "typing",
+        "typing"
     ],
     extras_require={
-        "develop": [
-            "tox",
-        ],
-        "testing": [
-            "coverage",
-            "pytest",
-        ]
     }
 )

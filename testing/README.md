@@ -9,7 +9,7 @@ tests are run via tox.
 ```shell script
 # run from project root:
 pip install tox
-python -m tox
+tox
 ```
 
 ### via docker 
@@ -21,7 +21,7 @@ docker run \
   -w /usr/src/nichtparasoup \
   -it --rm \
   python:3.4 bash -c \
-  'pip install tox; python -m tox'
+  'pip install tox; tox'
 ```
 
 ## reports 

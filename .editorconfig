@@ -21,7 +21,7 @@ indent_size = 2
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[{*.ini, setup.cfg, .coveragerc}]
+[{*.ini, setup.cfg, .coveragerc,.pylintrc,.flake8}]
 indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true

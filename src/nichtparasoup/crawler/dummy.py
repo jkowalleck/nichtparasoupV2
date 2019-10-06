@@ -1,8 +1,8 @@
 __all__ = ["Dummy"]
 
-from . import ImageCrawler, Images, Image
-
 import uuid
+
+from . import ImageCrawler, Images, Image
 
 
 class Dummy(ImageCrawler):

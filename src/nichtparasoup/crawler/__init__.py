@@ -1,22 +1,22 @@
-__all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource"]
+__all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource", "_EmptyImageCrawler"]
 
 import abc
 import typing
 
-ImageUri = str
+ImageUri = str  # maybe this becomes ab wb class, later
 
-ImageSource = str
+ImageSource = str  # maybe this becomes ab wb class, later
 
 
 class Image(object):
 
-    def __init__(self, uri: ImageUri, source: typing.Optional[ImageSource] = None, **more) -> None:
+    def __init__(self, uri: ImageUri, source: typing.Optional[ImageSource] = None, **more: typing.Any) -> None:
         self.uri = uri
         self.source = source
         self.more = more
 
     def __hash__(self) -> int:
-        """ the uri is the identifier of Image """
+        """ the uri is the identifier of Image. uri determines the hash """
         return hash(self.uri)
 
 
@@ -30,4 +30,12 @@ class ImageCrawler(abc.ABC):
         self.site = site
 
     @abc.abstractmethod
-    def crawl(self) -> Images: pass
+    def crawl(self) -> Images:
+        raise Exception('this abstract method was not implemented')
+
+
+class _EmptyImageCrawler(ImageCrawler):
+    """ a crawler that finds nothing. use it for mocking... """
+
+    def crawl(self) -> Images:
+        return Images()

@@ -1,0 +1,14 @@
+[flake8]
+ignore =
+
+exclude =
+    .git,
+    __pycache__,
+    old,
+    build,
+    dist,
+    .tox
+    *_cache
+
+max-complexity = 10
+max-line-length = 119

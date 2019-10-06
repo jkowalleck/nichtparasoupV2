@@ -1,18 +1,13 @@
 import unittest
 from unittest.mock import MagicMock
 
-
 from nichtparasoup.nichtparasoup import Crawler
-from nichtparasoup.crawler import ImageCrawler, Images, Image
+from nichtparasoup.crawler import Image, Images, _EmptyImageCrawler
 
 
 class CrawlerTest(unittest.TestCase):
 
-    class ImageCrawlerForTesting(ImageCrawler):
-        """ implementation for testing & mocking """
-        def crawl(self) -> Images: pass
-
-    def test_crawl(self):
+    def test_crawl(self) -> None:
         # arrange
         called_is_image_addable_with = Images()
         called_added_images_with = Images()
@@ -21,20 +16,20 @@ class CrawlerTest(unittest.TestCase):
             Image('test1'): True,
             Image('test2'): False,
         }
-        images = Images(images_addable.keys())
+        images = Images(image for image in images_addable.keys())
 
         def is_image_addable(crawled_image: Image) -> bool:
             # must be compatible to: _IsImageAddable
             called_is_image_addable_with.add(crawled_image)
             return images_addable[crawled_image]
 
-        def on_image_added(crawled_image: Image):
+        def on_image_added(crawled_image: Image) -> None:
             # must be compatible to: _OnImageAdded
             called_added_images_with.add(crawled_image)
             pass
 
-        imagecrawler = self.ImageCrawlerForTesting('test')
-        imagecrawler.crawl = MagicMock(return_value=images)
+        imagecrawler = _EmptyImageCrawler('test')
+        imagecrawler.crawl = MagicMock(return_value=images)  # type: ignore
         crawler = Crawler(imagecrawler, 1, is_image_addable, on_image_added)
 
         # act
@@ -48,7 +43,7 @@ class CrawlerTest(unittest.TestCase):
         )
         self.assertSetEqual(
             called_added_images_with,
-            Images(image for (image, addable) in images_addable.items() if addable),
+            set(image for (image, addable) in images_addable.items() if addable),
             'called added_images() wrong'
         )
         self.assertSetEqual(

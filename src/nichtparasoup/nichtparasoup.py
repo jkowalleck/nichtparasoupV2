@@ -1,4 +1,4 @@
-__all__ = ['NichtParasoup', 'CrawlerWeight', 'Crawler', 'Crawlers', 'BlackList']
+__all__ = ['NichtParasoup', 'Crawler', 'CrawlerWeight', 'Crawlers', 'Blacklist']
 
 import typing
 
@@ -7,7 +7,7 @@ from .crawler import Images, Image, ImageUri, ImageCrawler
 CrawlerWeight = typing.Union[int, float]
 
 
-class BlackList(typing.Set[ImageUri]):
+class Blacklist(typing.Set[ImageUri]):
     pass
 
 
@@ -24,12 +24,12 @@ class Crawler(object):
                  on_image_added: typing.Optional[_OnImageAdded] = None
                  ):
         self.imagecrawler = imagecrawler
-        self.weight = weight if weight > 0 else 1
+        self.weight = weight if weight > 0 else 1  # typing: CrawlerWeight
         self.images = Images()
         self._is_image_addable = is_image_addable
         self._image_added = on_image_added
 
-    def crawl(self):
+    def crawl(self) -> None:
         images_crawled = self.imagecrawler.crawl()
         for image_crawled in images_crawled:
             image_is_addable = self._is_image_addable(image_crawled) if self._is_image_addable else True
@@ -48,7 +48,7 @@ class NichtParasoup(object):
 
     def __init__(self) -> None:
         self.crawlers = Crawlers()
-        self.blacklist = BlackList()
+        self.blacklist = Blacklist()
 
     def _is_image_not_in_blacklist(self, image: Image) -> bool:
         # must be compatible to: _IsImageAddable
@@ -58,7 +58,7 @@ class NichtParasoup(object):
         # must be compatible to: _OnImageAdded
         self.blacklist.add(image.uri)
 
-    def add_imagerawler(self, imagecrawler: ImageCrawler, weight: CrawlerWeight):
+    def add_imagerawler(self, imagecrawler: ImageCrawler, weight: CrawlerWeight) -> None:
         self.crawlers.add(Crawler(
             imagecrawler, weight,
             self._is_image_not_in_blacklist, self._add_image_to_blacklist
