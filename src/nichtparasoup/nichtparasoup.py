@@ -22,7 +22,7 @@ class Crawler(object):
                  imagecrawler: ImageCrawler, weight: CrawlerWeight,
                  is_image_addable: typing.Optional[_IsImageAddable] = None,
                  on_image_added: typing.Optional[_OnImageAdded] = None
-                 ):
+                 ) -> None:
         self.imagecrawler = imagecrawler
         self.weight = weight if weight > 0 else 1  # typing: CrawlerWeight
         self.images = Images()

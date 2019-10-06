@@ -1,11 +1,12 @@
-__all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource", "_EmptyImageCrawler"]
+__all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource"]
+
 
 import abc
 import typing
 
-ImageUri = str  # maybe this becomes ab wb class, later
+ImageUri = str  # maybe this becomes ab own class, later
 
-ImageSource = str  # maybe this becomes ab wb class, later
+ImageSource = str  # maybe this becomes an own class, later
 
 
 class Image(object):
@@ -31,11 +32,4 @@ class ImageCrawler(abc.ABC):
 
     @abc.abstractmethod
     def crawl(self) -> Images:
-        raise Exception('this abstract method was not implemented')  # pragma: no cover
-
-
-class _EmptyImageCrawler(ImageCrawler):
-    """ a crawler that finds nothing. use it for mocking... """
-
-    def crawl(self) -> Images:
-        return Images()  # pragma: no cover
+        pass  # pragma: no cover

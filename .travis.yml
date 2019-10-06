@@ -8,9 +8,9 @@ script: python -m tox
 matrix:
   include:
     - python: "3.6"
-      env: TOXENV=flake8
-    - python: "3.6"
       env: TOXENV=mypy
+    - python: "3.6"
+      env: TOXENV=flake8
     - python: "3.4"
       env: TOXENV=py34-codecov
     - python: "3.5"

@@ -1,7 +1,14 @@
 import unittest
 
 from nichtparasoup.nichtparasoup import NichtParasoup
-from nichtparasoup.crawler import Image, _EmptyImageCrawler
+from nichtparasoup.crawler import Images, Image, ImageCrawler
+
+
+class _EmptyImageCrawler(ImageCrawler):
+    """ a crawler that finds nothing. use it for mocking ... """
+
+    def crawl(self) -> Images:
+        return Images()
 
 
 class NichtParasoupTest(unittest.TestCase):
