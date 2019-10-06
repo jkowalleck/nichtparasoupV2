@@ -1,5 +1,3 @@
-__all__ = ['CrawlerDummyTest']
-
 import unittest
 
 from nichtparasoup.crawler.dummy import Dummy as CrawlerDummy

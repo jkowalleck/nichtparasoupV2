@@ -31,11 +31,11 @@ class ImageCrawler(abc.ABC):
 
     @abc.abstractmethod
     def crawl(self) -> Images:
-        raise Exception('this abstract method was not implemented')
+        raise Exception('this abstract method was not implemented')  # pragma: no cover
 
 
 class _EmptyImageCrawler(ImageCrawler):
     """ a crawler that finds nothing. use it for mocking... """
 
     def crawl(self) -> Images:
-        return Images()
+        return Images()  # pragma: no cover
