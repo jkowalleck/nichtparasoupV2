@@ -7,7 +7,7 @@ class CrawlerDummyTest(unittest.TestCase):
 
     def test_crawl(self) -> None:
         # arrange
-        crawler = CrawlerDummy('test')
+        crawler = CrawlerDummy("test")
 
         # act
         images_crawled = crawler.crawl()
@@ -15,6 +15,6 @@ class CrawlerDummyTest(unittest.TestCase):
         image_crawled = images_crawled.pop() if images_crawled_len else None
 
         # assert
-        self.assertEqual(images_crawled_len, 1, 'no images crawled')
+        self.assertEqual(images_crawled_len, 1, "no images crawled")
         if image_crawled:
-            self.assertTrue(image_crawled.more.get('this_is_a_dummy'), 'this is not a dummy')
+            self.assertTrue(image_crawled.more.get("this_is_a_dummy"), "this is not a dummy")

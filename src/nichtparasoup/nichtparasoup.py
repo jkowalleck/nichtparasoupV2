@@ -1,4 +1,4 @@
-__all__ = ['NichtParasoup', 'Crawler', 'CrawlerWeight', 'Crawlers', 'Blacklist']
+__all__ = ["NichtParasoup", "Crawler", "CrawlerWeight", "Crawlers", "Blacklist"]
 
 import typing
 

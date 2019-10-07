@@ -7,15 +7,11 @@ script: python -m tox
 
 matrix:
   include:
-    - python: "3.6"
-      env: TOXENV=mypy
-    - python: "3.6"
-      env: TOXENV=flake8
-    - python: "3.4"
-      env: TOXENV=py34-codecov
+    - python: "3.4" # DEPRECATED
+      env: TOXENV=flake8,py34-codecov
     - python: "3.5"
-      env: TOXENV=py35-codecov
-    - python: "3.6"      # current default Python on Travis CI
-      env: TOXENV=py36-codecov
+      env: TOXENV=mypy,flake8,py35-codecov
+    - python: "3.6"
+      env: TOXENV=mypy,flake8,py36-codecov
     - python: "3.7"
-      env: TOXENV=py37-codecov
+      env: TOXENV=mypy,flake8,py37-codecov

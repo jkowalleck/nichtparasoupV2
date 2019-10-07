@@ -21,7 +21,7 @@ docker run \
   -w /usr/src/nichtparasoup \
   -it --rm \
   python:3.4 bash -c \
-  'pip install tox; python -m tox -e py3'
+  "pip install tox; python -m tox -e py3"
 ```
 
 ## reports 

@@ -20,8 +20,8 @@ class CrawlerTest(unittest.TestCase):
         called_added_images_with = Images()
 
         images_addable = {
-            Image('test1'): True,
-            Image('test2'): False,
+            Image("test1"): True,
+            Image("test2"): False,
         }
         images = Images(image for image in images_addable.keys())
 
@@ -35,7 +35,7 @@ class CrawlerTest(unittest.TestCase):
             called_added_images_with.add(crawled_image)
             pass
 
-        imagecrawler = _EmptyImageCrawler('test')
+        imagecrawler = _EmptyImageCrawler("test")
         imagecrawler.crawl = MagicMock(return_value=images)  # type: ignore
         crawler = Crawler(imagecrawler, 1, is_image_addable, on_image_added)
 
@@ -46,15 +46,15 @@ class CrawlerTest(unittest.TestCase):
         self.assertSetEqual(
             called_is_image_addable_with,
             images,
-            'called is_image_addable() wrong'
+            "called is_image_addable() wrong"
         )
         self.assertSetEqual(
             called_added_images_with,
             set(image for (image, addable) in images_addable.items() if addable),
-            'called added_images() wrong'
+            "called added_images() wrong"
         )
         self.assertSetEqual(
             crawler.images,
             set(called_added_images_with),
-            'added images wrong'
+            "added images wrong"
         )

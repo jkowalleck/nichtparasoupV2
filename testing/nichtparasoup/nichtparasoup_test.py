@@ -15,8 +15,8 @@ class NichtParasoupTest(unittest.TestCase):
 
     def test__is_image_not_in_blacklist(self) -> None:
         # arrange
-        image1 = Image('test1')
-        image2 = Image('test2')
+        image1 = Image("test1")
+        image2 = Image("test2")
         nichtparasoup = NichtParasoup()
 
         # act
@@ -28,8 +28,8 @@ class NichtParasoupTest(unittest.TestCase):
 
     def test__add_image_to_blacklist(self) -> None:
         # arrange
-        image1 = Image('test1')
-        image2 = Image('test2')
+        image1 = Image("test1")
+        image2 = Image("test2")
         nichtparasoup = NichtParasoup()
 
         # act
@@ -43,7 +43,7 @@ class NichtParasoupTest(unittest.TestCase):
         # arrange
 
         nichtparasoup = NichtParasoup()
-        imagecrawler = _EmptyImageCrawler('test')
+        imagecrawler = _EmptyImageCrawler("test")
 
         # act
         nichtparasoup.add_imagerawler(imagecrawler, 1)
