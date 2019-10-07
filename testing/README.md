@@ -1,18 +1,38 @@
 # test
 
-## run 
+## write tests
 
-tests are run via tox.
+```shell script
+python3 -m pip install -e .[testing]
+```
 
-### general 
+then write your tests.  
+add additional needed requirements to the "testing" extras in `../setup.py`.
+
+
+## run tests
+
+```shell script
+python3 -m pip install -e .[testing]
+python3 -m coverage run -m pytest 
+```
+
+then, to gather test coverage:
+
+```shell script
+python3 -m coverage report -m 
+python3 -m coverage html 
+```
+
+
+### via tox 
 
 ```shell script
 # run from project root:
-pip install tox
-python -m tox -e py3
+python3 -m pip install --upgrade tox
+python3 -m tox -e py3-coverage
 ```
 
-### via docker 
 ```shell script
 # run from project root:
 docker run \
