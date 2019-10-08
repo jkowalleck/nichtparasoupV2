@@ -5,9 +5,8 @@ setuptools.setup(
     version="0.0.1",  # @TODO set versions
     packages=setuptools.find_packages(where="src"),
     package_dir={"": "src"},
-    python_requires=">=3.4",
+    python_requires=">=3.5",
     install_requires=[
-        'typing;python_version<="3.4"',
     ],
     extras_require={
         "develop": [
