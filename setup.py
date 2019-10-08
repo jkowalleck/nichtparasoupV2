@@ -20,7 +20,7 @@ setuptools.setup(
             # flake8-isort;python_version>="3.5"  # enable when we have a auto-fixer in place
             # 'flake8-pep3101;python_version>="3.5"',
             "pep8-naming",
-            "mypy",
+            "mypy -v",
             "pytest",
             "coverage",
             "ddt"
