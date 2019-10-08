@@ -30,7 +30,7 @@ python3 -m coverage html
 ```shell script
 # run from project root:
 python3 -m pip install --upgrade tox
-python3 -m tox -e py3-coverage
+python3 -m tox
 ```
 
 ```shell script
@@ -41,7 +41,7 @@ docker run \
   -w /usr/src/nichtparasoup \
   -it --rm \
   python:3.4 bash -c \
-  "pip install tox; python -m tox -e py3"
+  "pip install tox; python -m tox"
 ```
 
 ## reports 

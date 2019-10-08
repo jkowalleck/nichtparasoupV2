@@ -8,10 +8,10 @@ script: python -m tox
 matrix:
   include:
     - python: "3.4"
-      env: TOXENV=linter,codestyle,testing,coverage,codecov
+      env: TOXENV=py34-codecov
     - python: "3.5"
-      env: TOXENV=linter,codestyle,testing,coverage,codecov
+      env: TOXENV=py35-codecov
     - python: "3.6"
-      env: TOXENV=linter,codestyle,testing,coverage,codecov
+      env: TOXENV=py36-codecov
     - python: "3.7"
-      env: TOXENV=linter,codestyle,testing,coverage,codecov
+      env: TOXENV=py37-codecov
