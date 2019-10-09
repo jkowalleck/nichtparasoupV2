@@ -1,28 +1,28 @@
 __all__ = ["NichtParasoup", "Crawler", "CrawlerWeight", "Crawlers", "Blacklist"]
 
-import typing
+from typing import Any, Union, Set, Callable, Optional
 from random import choice as random_choice
 
 from .crawler import Images, Image, ImageUri, ImageCrawler
 
-CrawlerWeight = typing.Union[int, float]
+CrawlerWeight = Union[int, float]
 
 
-class Blacklist(typing.Set[ImageUri]):
+class Blacklist(Set[ImageUri]):
     pass
 
 
-_IsImageAddable = typing.Callable[[Image], bool]
+_IsImageAddable = Callable[[Image], bool]
 
-_OnImageAdded = typing.Callable[[Image], typing.Any]
+_OnImageAdded = Callable[[Image], Any]
 
 
 class Crawler(object):
 
     def __init__(self,
                  imagecrawler: ImageCrawler, weight: CrawlerWeight,
-                 is_image_addable: typing.Optional[_IsImageAddable] = None,
-                 on_image_added: typing.Optional[_OnImageAdded] = None
+                 is_image_addable: Optional[_IsImageAddable] = None,
+                 on_image_added: Optional[_OnImageAdded] = None
                  ) -> None:
         self.imagecrawler = imagecrawler
         self.weight = weight if weight > 0 else 1  # typing: CrawlerWeight
@@ -41,7 +41,7 @@ class Crawler(object):
                 self._image_added(image_crawled)
 
 
-class Crawlers(typing.Set[Crawler]):
+class Crawlers(Set[Crawler]):
     pass
 
 
@@ -65,7 +65,7 @@ class NichtParasoup(object):
             self._is_image_not_in_blacklist, self._add_image_to_blacklist
         ))
 
-    def get_random_image(self) -> typing.Optional[Image]:
+    def get_random_image(self) -> Optional[Image]:
         if not self.crawlers:
             return None
         crawler = random_choice(list(self.crawlers))  # type: Crawler

@@ -1,5 +1,6 @@
 if __name__ == "__main__":
-    import os
+    from os.path import join as path_join
+    from os.path import dirname
 
     from werkzeug.routing import Rule
     from werkzeug.serving import run_simple
@@ -20,6 +21,6 @@ if __name__ == "__main__":
     run_simple(
         '127.0.0.1', 5000,  # @TODO write this foo based on some proper settings
         server,
-        static_files={"/": os.path.join(os.path.dirname(__file__), "server-static")},
+        static_files={"/": path_join(dirname(__file__), "server-static")},
         use_debugger=False
     )

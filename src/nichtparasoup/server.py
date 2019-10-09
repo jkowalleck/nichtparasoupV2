@@ -1,6 +1,6 @@
 __all__ = ["Server"]
 
-import typing
+from typing import Dict, Any, Union
 
 from .nichtparasoup import NichtParasoup
 
@@ -19,10 +19,10 @@ class Server(object):
             Rule('/get', endpoint=self.on_get),
         ])
 
-    def __call__(self, environ: typing.Dict[str, typing.Any], start_response: typing.Any) -> typing.Any:
+    def __call__(self, environ: Dict[str, Any], start_response: Any) -> Any:
         return self.wsgi_app(environ, start_response)
 
-    def dispatch_request(self, request: Request) -> typing.Union[Response, HTTPException]:
+    def dispatch_request(self, request: Request) -> Union[Response, HTTPException]:
         adapter = self.url_map.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
@@ -31,7 +31,7 @@ class Server(object):
         except HTTPException as e:
             return e
 
-    def wsgi_app(self, environ: typing.Dict[str, typing.Any], start_response: typing.Any) -> typing.Any:
+    def wsgi_app(self, environ: Dict[str, Any], start_response: Any) -> Any:
         request = Request(environ)
         response = self.dispatch_request(request)
         if isinstance(response, Response):
