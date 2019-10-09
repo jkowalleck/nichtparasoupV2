@@ -1,6 +1,5 @@
 __all__ = ["ImageCrawler", "Images", "Image", "ImageUri", "ImageSource"]
 
-
 import abc
 import typing
 

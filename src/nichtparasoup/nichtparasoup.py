@@ -1,6 +1,7 @@
 __all__ = ["NichtParasoup", "Crawler", "CrawlerWeight", "Crawlers", "Blacklist"]
 
 import typing
+from random import choice as random_choice
 
 from .crawler import Images, Image, ImageUri, ImageCrawler
 
@@ -63,3 +64,14 @@ class NichtParasoup(object):
             imagecrawler, weight,
             self._is_image_not_in_blacklist, self._add_image_to_blacklist
         ))
+
+    def get_random_image(self) -> typing.Optional[Image]:
+        if not self.crawlers:
+            return None
+        crawler = random_choice(list(self.crawlers))  # type: Crawler
+        crawler.crawl()
+        if not crawler.images:
+            return None
+        image = random_choice(list(crawler.images))
+        crawler.images.discard(image)
+        return image

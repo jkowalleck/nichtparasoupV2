@@ -2,15 +2,16 @@ import setuptools
 
 setuptools.setup(
     name="nichtparasoup",
-    version="0.0.1",  # @TODO set versions
-    packages=setuptools.find_packages(where="src"),
+    version="2.0.dev0",  # @TODO set versions
+    packages=["nichtparasoup"],
     package_dir={"": "src"},
     python_requires=">=3.5",
     install_requires=[
+        "werkzeug",
     ],
     extras_require={
-        "develop": [
-            "tox"  # realy needed ?
+        "development": [
+            "tox",  # really needed ?
         ],
         "testing": [
             "flake8",
@@ -19,10 +20,10 @@ setuptools.setup(
             # flake8-isort;python_version>="3.5"  # enable when we have a auto-fixer in place
             # 'flake8-pep3101;python_version>="3.5"',
             "pep8-naming",
-            "mypy -v",
+            "mypy",
             "pytest",
             "coverage",
-            "ddt"
-        ]
+            "ddt",
+        ],
     }
 )
