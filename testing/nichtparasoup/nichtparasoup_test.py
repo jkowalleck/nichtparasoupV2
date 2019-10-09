@@ -41,7 +41,6 @@ class NichtParasoupTest(unittest.TestCase):
 
     def test_add_imagerawler(self) -> None:
         # arrange
-
         nichtparasoup = NichtParasoup()
         imagecrawler = _EmptyImageCrawler("test")
 
@@ -50,3 +49,27 @@ class NichtParasoupTest(unittest.TestCase):
 
         # assert
         self.assertIn(imagecrawler, [crawler.imagecrawler for crawler in nichtparasoup.crawlers])
+
+    def test_get_random_image(self) -> None:
+        # arrange
+        imagecrawler = _EmptyImageCrawler("test")
+
+        nichtparasoup_no_crawler = NichtParasoup()
+
+        nichtparasoup_empty_crawler = NichtParasoup()
+        nichtparasoup_empty_crawler.add_imagerawler(imagecrawler, 1)
+
+        nichtparasoup_filled_crawler = NichtParasoup()
+        nichtparasoup_filled_crawler.add_imagerawler(imagecrawler, 1)
+        image_in_filled_crawler = Image('test')
+        list(nichtparasoup_filled_crawler.crawlers)[0].images.add(image_in_filled_crawler)
+
+        # act
+        image_from_no_crawler = nichtparasoup_no_crawler.get_random_image()
+        image_from_empty_crawler = nichtparasoup_empty_crawler.get_random_image()
+        image_from_filled_crawler = nichtparasoup_filled_crawler.get_random_image()
+
+        # assert
+        self.assertIsNone(image_from_no_crawler, 'expected no image from an empty crawler set')
+        self.assertIsNone(image_from_empty_crawler, 'expected no image from an empty image set')
+        self.assertIs(image_from_filled_crawler, image_in_filled_crawler, 'expected the one image that was available')

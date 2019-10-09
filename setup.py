@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="nichtparasoup",
-    version="2.0.dev0",  # @TODO set versions
+    version="2.0.dev0",  # TODO: set versions
     packages=["nichtparasoup"],
     package_dir={"": "src"},
     python_requires=">=3.5",

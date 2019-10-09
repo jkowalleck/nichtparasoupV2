@@ -12,7 +12,7 @@ class Dummy(ImageCrawler):
         images = Images()
         images.add(Image(
             "#" + urlencode({
-                # @TODO add data url to the logo or something
+                # TODO: add data url to the logo or something
                 "site": self.site,
                 "uuid": str(uuid4())
             }),

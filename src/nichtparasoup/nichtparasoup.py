@@ -37,7 +37,7 @@ class Crawler(object):
             if not image_is_addable:
                 continue  # for
             self.images.add(image_crawled)
-            if self._image_added:
+            if self._image_added:  # pragma: no cover
                 self._image_added(image_crawled)
 
 
