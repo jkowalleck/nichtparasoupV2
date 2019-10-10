@@ -2,11 +2,11 @@ import unittest
 from unittest.mock import MagicMock
 
 from nichtparasoup.nichtparasoup import Crawler
-from nichtparasoup.crawler import Image, Images, ImageCrawler
+from nichtparasoup.imagecrawler import Image, Images, ImageCrawler
 
 
 class _EmptyImageCrawler(ImageCrawler):
-    """ a crawler that finds nothing. use it for mocking ... """
+    """ imagecrawler that finds nothing. use it for mocking ... """
 
     def crawl(self) -> Images:
         return Images()

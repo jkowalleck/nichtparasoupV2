@@ -1,6 +1,6 @@
 import unittest
 
-from nichtparasoup.crawler import Image
+from nichtparasoup.imagecrawler import Image
 
 
 class ImageTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from nichtparasoup.crawler.dummy import Dummy as CrawlerDummy
+from nichtparasoup.imagecrawler.dummy import Dummy as CrawlerDummy
 
 
 class CrawlerDummyTest(unittest.TestCase):

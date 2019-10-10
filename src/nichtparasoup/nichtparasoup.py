@@ -3,7 +3,7 @@ __all__ = ["NichtParasoup", "Crawler", "CrawlerWeight", "Crawlers", "Blacklist"]
 from typing import Any, Union, Set, Callable, Optional
 from random import choice as random_choice
 
-from .crawler import Images, Image, ImageUri, ImageCrawler
+from .imagecrawler import Images, Image, ImageUri, ImageCrawler
 
 CrawlerWeight = Union[int, float]
 
@@ -40,9 +40,31 @@ class Crawler(object):
             if self._image_added:  # pragma: no cover
                 self._image_added(image_crawled)
 
+    def get_random_image(self) -> Optional[Image]:
+        self.crawl()  # for demo and debugging # TODO: remove this line
+        if not self.images:
+            return None
+        image = random_choice(list(self.images))
+        self.images.discard(image)
+        return image
+
+    def pop_random_image(self) -> Optional[Image]:
+        image = self.get_random_image()
+        if not image:
+            return None
+        self.images.discard(image)
+        return image
+
 
 class Crawlers(Set[Crawler]):
-    pass
+
+    def get_random(self) -> Optional[Crawler]:
+        if not self:
+            return None
+        crawlers = list(self)
+        # TODO: add weighted random
+        crawler = random_choice(crawlers)  # type: Crawler
+        return crawler
 
 
 class NichtParasoup(object):
@@ -66,12 +88,5 @@ class NichtParasoup(object):
         ))
 
     def get_random_image(self) -> Optional[Image]:
-        if not self.crawlers:
-            return None
-        crawler = random_choice(list(self.crawlers))  # type: Crawler
-        crawler.crawl()
-        if not crawler.images:
-            return None
-        image = random_choice(list(crawler.images))
-        crawler.images.discard(image)
-        return image
+        crawler = self.crawlers.get_random()
+        return crawler.get_random_image() if crawler else None
